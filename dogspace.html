@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小狗的专属空间</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #fff4f4, #fceaff, #e1f1ff);
+            font-family: 'Ma Shan Zheng', cursive;
+            text-align: center;
+            color: #6d3f5b;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        h1 {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 28px;
+            color: #ff5e9e;
+        }
+        .sign-in, .button {
+            font-size: 20px;
+            background: #ff94c2;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+        }
+        .sign-in:hover, .button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px #ff5e9e;
+        }
+        .reward {
+            display: none;
+            font-size: 18px;
+            background: #ffc107;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 10px;
+            animation: bounce 1s infinite;
+        }
+        .pixel-cat {
+            width: 50px;
+            height: 50px;
+            background: url('https://your-pixel-cat-url.png') no-repeat center/contain;
+            display: inline-block;
+            animation: shake 2s infinite alternate;
+        }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+        @keyframes shake {
+            0% { transform: rotate(0); }
+            25% { transform: rotate(2deg); }
+            50% { transform: rotate(0); }
+            75% { transform: rotate(-2deg); }
+            100% { transform: rotate(0); }
+        }
+        .task-list li {
+            background-color: #ffe4b5;
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 8px;
+        }
+        .cat-gallery img {
+            width: 100px;
+            margin: 10px;
+        }
+        .pixel-decoration {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 40px;
+        }
+        .interaction input {
+            padding: 10px;
+            width: 80%;
+            border: 2px solid #ffb6c1;
+            border-radius: 8px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .cat-house {
+            margin-top: 30px;
+        }
+        .cat-house img {
+            width: 80px;
+            margin: 5px;
+        }
+        .character-img {
+            width: 100px;
+            margin: 20px;
+        }
+        .character-section {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🐶 小狗的专属空间 🐾</h1>
+        <div class="pixel-decoration"></div>
+        
+        <!-- Cat Collection -->
+        <div>
+            <h2>猫咪收藏 🐱</h2>
+            <div class="cat-house">
+                <p>猫咪小屋</p >
+                <div class="cat-gallery">
+                    <!-- Display collected cats here -->
+                </div>
+            </div>
+            <p>猫咪能量: <span id="cat-energy">0</span></p >
+        </div>
+
+        <!-- Task System -->
+        <div class="task-section">
+            <h2>任务系统</h2>
+            <ul class="task-list">
+                <li><input type="checkbox" id="task1"> 跑步</li>
+                <li><input type="checkbox" id="task2"> 早睡</li>
+                <li><input type="checkbox" id="task3"> 画画</li>
+                <li><input type="checkbox" id="task4"> 写文</li>
+                <li><input type="checkbox" id="task5"> 摇尾巴</li>
+            </ul>
+            <button class="sign-in" onclick="completeTask()">完成任务</button>
+        </div>
+
+        <!-- 日记 -->
+        <h2>📝 小狗日记</h2>
+        <input type="text" id="diary-input" placeholder="记录今天的心情...">
+        <button class="button" onclick="saveDiary()">保存</button>
+        <p id="diary-output"></p >
+
+        <!-- 互动系统 -->
+        <h2>💬 互动系统</h2>
+        <input type="text" id="interaction-input" placeholder="对哥哥撒娇吧~">
+        <button class="button" onclick="respond()">发送</button>
+        <p id="interaction-response"></p >
+
+        <!-- Pixel Characters -->
+        <div class="character-section">
+            < img class="character-img" src="https://example.com/female-pixel-character.png" alt="女孩" />
+            < img class="character-img" src="https://example.com/male-pixel-character.png" alt="男孩" />
+        </div>
+    </div>
+
+    <footer class="footer">
+        © 2025 小狗的专属空间 💖
+    </footer>
+
+    <script>
+        let catEnergy = 0; // 当前能量值
+        let collectedCats = []; // 用来存储已收集的猫咪
+
+        // 完成任务或签到后触发的函数
+        function completeTask() {
+            const tasks = [document.getElementById("task1"), document.getElementById("task2"), document.getElementById("task3"), document.getElementById("task4"), document.getElementById("task5")];
+            tasks.forEach(task => {
+                if (task.checked) {
+                    catEnergy += 20; // 每完成一个任务增加20能量
+                }
+            });
+
+            // 更新显示的能量
+            document.getElementById("cat-energy").innerText = catEnergy;
+
+            // 如果能量达到 100，就随机获得一只新的猫咪
+            if (catEnergy >= 100) {
+                catEnergy = 0; // 重置能量
+                document.getElementById("cat-energy").innerText = catEnergy;
+                addNewCat(); // 获取新的猫咪
+            }
+        }
+
+        // 获取并显示新的猫咪
+        function addNewCat() {
+            const catImages = [
+                "https://cdn.pixabay.com/photo/2021/03/31/08/38/cat-6157384_960_720.png",
+                "https://cdn.pixabay.com/photo/2021/03/31/08/38/cat-6157385_960_720.png",
+                "https://cdn.pixabay.com/photo/2021/03/31/08/38/cat-6157386_960_720.png"
+            ];
+            const randomCat = catImages[Math.floor(Math.random() * catImages.length)];
+
+            // 添加新猫咪到收藏区
+            collectedCats.push(randomCat);
+
+            const catGallery = document.querySelector(".cat-gallery");
+            const img = document.createElement("img");
+            img.src = randomCat;
+            img.alt = "新猫咪";
+            catGallery.appendChild(img);
+        }
+
+        // 保存日记
+        function saveDiary() {
+            const diaryText = document.getElementById("diary-input").value;
+            if (diaryText) {
+                document.getElementById("diary-output").innerText = "📖 记录: " + diaryText;
+            }
+        }
+
+        // 互动系统回复
+        function respond() {
+            const userInput = document.getElementById("interaction-input").value.toLowerCase();
+            let response = "";
+
+            if (userInput.includes("抱抱")) {
+                response = "过来，抱紧你 🫂";
+            } else if (userInput.includes("亲亲")) {
+                response = "啾咪 💋";
+            } else if (userInput.includes("撒娇")) {
+                response = "怎么了？想要我抱你吗？";
+            } else if (userInput.includes("吃东西")) {
+                response = "好呀，一起吃点零食吧 🍪";
+            } else {
+                response = "嗯... 你在想什么？";
+            }
+
+            document.getElementById("interaction-response").innerText = response;
+        }
+    </script>
+
+</body>
+</html>
